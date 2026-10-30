@@ -7,381 +7,341 @@
 <title>Clicker Heroes Lite</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-/* Без анімацій, переходів і тіней. Чорний фон (OLED) економить батарею. */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
-html,body{height:100%;background:#000;color:#e6e1d3;overflow:hidden}
-body{font:15px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums;-webkit-user-select:none;user-select:none}
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:560px;margin:0 auto;padding:env(safe-area-inset-top) 8px env(safe-area-inset-bottom)}
-button{font:inherit;color:inherit;background:#151515;border:1px solid #2e2e2e;border-radius:6px;padding:8px 10px;touch-action:manipulation;cursor:pointer}
-button:active{background:#262626}
-button:focus-visible{outline:2px solid #f0b429;outline-offset:1px}
-button:disabled{color:#6d6a60;cursor:default}
-header{display:flex;gap:8px;padding:8px 0}
-.st{flex:1;background:#0e0e0e;border:1px solid #232323;border-radius:6px;padding:6px 8px;min-width:0}
-.st span{display:block;font-size:12px;color:#8a867a}
-.st b{display:block;font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#gold{color:#f0b429}
-.row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
-#zone{font-size:18px;font-weight:700}
-#prog{margin-left:auto;color:#b8b3a4}
-.sq{width:40px;padding:6px 0}
-.bar{position:relative;height:24px;background:#1a1a1a;border:1px solid #2e2e2e;border-radius:6px;overflow:hidden;margin-bottom:8px}
-.bar i{position:absolute;left:0;top:0;bottom:0;width:100%;background:#8f1d17}
-.bar span{position:relative;display:block;text-align:center;line-height:22px;font-size:13px}
-#tap{display:block;width:100%;height:20vh;min-height:110px;max-height:190px;font-size:22px;white-space:pre-line;background:#0f1a12;border-color:#2c5a38;line-height:1.5}
-#tap:active{background:#17301e}
-#msg{min-height:20px;margin:6px 0 2px;color:#f0b429;font-size:13px}
-.opts{flex-wrap:wrap}
+html,body{height:100%;background:#1b1209;color:#f3e3c3;overflow:hidden}
+body{font:14px/1.3 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-variant-numeric:tabular-nums;-webkit-user-select:none;user-select:none}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;max-width:560px;margin:0 auto;padding:env(safe-area-inset-top) 6px env(safe-area-inset-bottom)}
+button{font:inherit;color:inherit;background:#4a3015;border:2px solid #8a5a26;border-radius:5px;padding:7px 9px;touch-action:manipulation;cursor:pointer}
+button:active{background:#6b4720}
+button:focus-visible{outline:2px solid #ffd34d;outline-offset:1px}
+button:disabled{color:#8b7a5e;border-color:#4a3a22;cursor:default}
+header{display:flex;gap:6px;padding:6px 0}
+.st{flex:1;background:#2a1b0c;border:2px solid #5c3d1b;border-radius:5px;padding:4px 7px;min-width:0}
+.st span{display:block;font-size:11px;color:#b89a6a}
+.st b{display:block;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#gold{color:#ffd34d}
+.row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+#zone{font-size:17px;font-weight:700}
+#prog{margin-left:auto;color:#d9c391}
+.sq{width:38px;padding:5px 0}
+.bar{position:relative;height:24px;background:#2a1b0c;border:2px solid #5c3d1b;border-radius:5px;overflow:hidden;margin-bottom:6px}
+.bar i{position:absolute;left:0;top:0;bottom:0;width:100%;background:#b32a1f}
+.bar span{position:relative;display:block;text-align:center;line-height:20px;font-size:13px}
+#tap{display:block;width:100%;height:17vh;min-height:90px;max-height:170px;font-size:20px;white-space:pre-line;background:#24391f;border-color:#4f8a3e;line-height:1.5}
+#tap:active{background:#2f4d28}
+#msg{min-height:18px;margin:4px 0 2px;color:#ffd34d;font-size:13px}
 #buys{display:flex;gap:4px;margin-left:auto}
-#buys button{padding:8px 9px}
-.on{background:#2a2410;border-color:#f0b429}
-#tabs{display:flex;gap:6px;margin:4px 0 6px}
-#tabs button{flex:1}
+#buys button{padding:7px 8px}
+.on{background:#6b4a12;border-color:#ffd34d}
+#tabs{display:flex;gap:4px;margin:3px 0 5px}
+#tabs button{flex:1;padding:7px 2px;font-size:12px}
 .pane{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:12px}
 .pane[hidden]{display:none}
-.hero{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #1c1c1c}
-.hero .in{flex:1;min-width:0}
-.hero b{display:block}
-.hero .lv,.hero .sd{display:block;font-size:12px;color:#8a867a}
-.by{min-width:112px;white-space:pre-line;text-align:center;font-size:13px;line-height:1.3}
-.by.ok{border-color:#f0b429;color:#f0b429}
-.card{padding:10px 0;color:#b8b3a4}
-.card p{margin-bottom:8px}
-.card b{color:#e6e1d3}
-.card button{width:100%;margin-top:6px}
-.danger{border-color:#7a2a24}
+.it{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid #3a2711}
+.it .in{flex:1;min-width:0}
+.it b{display:block}
+.it small{display:block;font-size:12px;color:#b89a6a}
+.by{min-width:104px;white-space:pre-line;text-align:center;font-size:12px;line-height:1.3}
+.by.ok{border-color:#ffd34d;color:#ffd34d}
+.done b{color:#8fd16f}
+.card{padding:8px 0;color:#d9c391}
+.card p{margin-bottom:7px}
+.card button{width:100%;margin-top:5px}
+.danger{border-color:#9a3128}
 </style>
 </head>
 <body>
 <div id="app">
-  <header>
-    <div class="st"><span>Золото</span><b id="gold">0</b></div>
-    <div class="st"><span>Шкода за секунду</span><b id="dps">0</b></div>
-    <div class="st"><span>Душі героїв</span><b id="souls">0</b></div>
-  </header>
-
-  <section>
-    <div class="row">
-      <button id="prev" class="sq" aria-label="Попередня зона">◀</button>
-      <div id="zone">Зона 1</div>
-      <button id="next" class="sq" aria-label="Наступна зона">▶</button>
-      <div id="prog">Монстри 0/10</div>
-    </div>
-    <div class="bar"><i id="hpbar"></i><span id="hptxt"></span></div>
-    <button id="tap">Бити</button>
-    <div id="msg"></div>
-    <div class="row opts">
-      <button id="auto">Автопросування</button>
-      <div id="buys">
-        <button data-b="1">×1</button>
-        <button data-b="10">×10</button>
-        <button data-b="100">×100</button>
-        <button data-b="max">Макс</button>
-      </div>
-    </div>
-  </section>
-
-  <nav id="tabs">
-    <button data-t="heroes" class="on">Герої</button>
-    <button data-t="ascend">Вознесіння</button>
-    <button data-t="more">Інше</button>
-  </nav>
-
-  <main id="heroes" class="pane"></main>
-
-  <main id="ascend" class="pane" hidden>
-    <div class="card">
-      <p>Вознесіння скидає золото, зону та рівні героїв, але дає душі героїв. Кожна душа додає +20% до шкоди всіх героїв і кліків.</p>
-      <p>Найвища зона в цьому забігу: <b id="a-max">1</b></p>
-      <p>Душ зараз: <b id="a-souls">0</b>, множник шкоди: <b id="a-mult">×1</b></p>
-      <p>Буде отримано: <b id="a-gain">0</b> (1 душа за кожні 5 зон, починаючи з 50-ї)</p>
-      <button id="a-btn">Вознестися</button>
-    </div>
-  </main>
-
-  <main id="more" class="pane" hidden>
-    <div class="card">
-      <p>Рекорд зони: <b id="m-best">1</b></p>
-      <p>Вознесінь: <b id="m-asc">0</b></p>
-      <p>Прогрес зберігається в пам’яті пристрою. Коли застосунок згорнуто, оновлення зупиняються, а після повернення нараховується прогрес за час відсутності (до 8 годин).</p>
-      <button id="reset" class="danger">Скинути весь прогрес</button>
-    </div>
-  </main>
+<header>
+  <div class="st"><span>Золото</span><b id="gold">0</b></div>
+  <div class="st"><span>Шкода за секунду</span><b id="dps">0</b></div>
+  <div class="st"><span>Душі героїв</span><b id="souls">0</b></div>
+</header>
+<section>
+  <div class="row">
+    <button id="prev" class="sq" aria-label="Попередня зона">◀</button>
+    <div id="zone">Зона 1</div>
+    <button id="next" class="sq" aria-label="Наступна зона">▶</button>
+    <div id="prog"></div>
+  </div>
+  <div class="bar"><i id="hpbar"></i><span id="hptxt"></span></div>
+  <button id="tap">Бити</button>
+  <div id="msg"></div>
+  <div class="row">
+    <button id="auto"></button>
+    <div id="buys"><button data-b="1">×1</button><button data-b="10">×10</button><button data-b="100">×100</button><button data-b="max">Макс</button></div>
+  </div>
+</section>
+<nav id="tabs">
+  <button data-t="heroes" class="on">Герої</button>
+  <button data-t="anc">Предки</button>
+  <button data-t="skills">Навички</button>
+  <button data-t="ach">Досягн.</button>
+  <button data-t="more">Вознес.</button>
+</nav>
+<main id="heroes" class="pane"></main>
+<main id="anc" class="pane" hidden></main>
+<main id="skills" class="pane" hidden></main>
+<main id="ach" class="pane" hidden></main>
+<main id="more" class="pane" hidden>
+  <div class="card">
+    <p>Вознесіння скидає золото, зону та рівні героїв і дає душі. Кожна душа, яку не витрачено на предків, дає +20% до шкоди. Душі: 1 за кожні 5 зон, починаючи з 60-ї.</p>
+    <p>Найвища зона в цьому забігу: <b id="a-max">1</b>. Буде отримано: <b id="a-gain">0</b></p>
+    <button id="a-btn">Вознестися</button>
+    <p style="margin-top:12px">Рекорд зони: <b id="m-best">1</b>. Вознесінь: <b id="m-asc">0</b></p>
+    <button id="reset" class="danger">Скинути весь прогрес</button>
+  </div>
+</main>
 </div>
-
 <script>
 (function () {
 'use strict';
-
 var tg = window.Telegram && window.Telegram.WebApp;
 if (tg) {
   try { tg.ready(); tg.expand(); } catch (e) {}
   try { tg.disableVerticalSwipes(); } catch (e) {}
-  try { tg.setHeaderColor('#000000'); tg.setBackgroundColor('#000000'); } catch (e) {}
+  try { tg.setHeaderColor('#1b1209'); tg.setBackgroundColor('#1b1209'); } catch (e) {}
 }
-
-var KEY = 'chl_save_v1';
-// [ім’я, базова ціна, базова шкода за секунду]; перший герой дає шкоду кліку
-var HEROES = [
-  ['Cid', 5, 0], ['Treebeast', 50, 5], ['Ivan', 250, 22], ['Brittany', 1000, 74],
-  ['Fisherman', 4000, 245], ['Betty', 20000, 976], ['Samurai', 1e5, 3725],
-  ['Leon', 4e5, 10859], ['Forest Seer', 2.5e6, 47143], ['Alabaster', 1.5e7, 186000],
-  ['Cadmia', 1e8, 782000], ['Lilin', 8e8, 3.7e6], ['Dante', 6.5e9, 19e6],
-  ['Dracula', 5e10, 82e6], ['Atlas', 4e11, 440e6], ['Terra', 3e12, 2.3e9],
-  ['Phthalo', 2.5e13, 13e9], ['Banana', 2e14, 70e9]
+var KEY = 'chl_full_v1';
+// ім’я, базова ціна, базова шкода/с (перший герой дає шкоду кліку)
+var H = [
+ ['Cid, Helpful Adventurer',5,0],['Treebeast',50,5],['Ivan, Drunken Brawler',250,22],['Brittany, Beach Princess',1000,74],
+ ['The Wandering Fisherman',4000,245],['Betty Clicker',2e4,976],['The Masked Samurai',1e5,3725],['Leon',4e5,10859],
+ ['The Great Forest Seer',2.5e6,47143],['Alabaster',1.5e7,186e3],['Cadmia',1e8,782e3],['Lilin',8e8,3.7e6],
+ ['Dante',6.5e9,19e6],['Dracula',5e10,82e6],['Atlas',4e11,440e6],['Terra',3e12,2.3e9],['Phthalo',2.5e13,13e9],['Banana',2e14,70e9]
 ];
-var MILESTONES = [10, 25, 50, 75, 100, 125, 150, 175, 200];
-var SUF = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'No', 'Dc'];
+var MS = [10,25,50,75,100,125,150,175,200];
+// предки: ім’я, опис, функція ефекту
+var AN = [
+ ['Siyalatas','+25% шкоди героїв за рівень'],
+ ['Fragsworth','+20% шкоди кліку за рівень'],
+ ['Mammon','+5% золота за рівень'],
+ ['Dogcog','−3% ціни героїв за рівень (мультиплікативно)']
+];
+// навички: ім’я, опис, тривалість, перезарядка, герой/рівень для розблокування
+var SK = [
+ ['Clickstorm','10 кліків на секунду протягом 10 с',10,600,0,10],
+ ['Powersurge','Шкода героїв ×2 на 30 с',30,600,1,10],
+ ['Metal Detector','Золото ×3 на 30 с',30,600,2,10]
+];
+var SUF = ['','K','M','B','T','Qa','Qi','Sx','Sp','Oc','No','Dc'];
+// досягнення: [назва, поле, поріг]
+var AC = [];
+[10,25,50,75,100,150,200].forEach(function(v){AC.push(['Дійти до зони '+v,'best',v]);});
+[100,1e3,1e4,1e5].forEach(function(v){AC.push(['Клікнути '+v+' разів','clicks',v]);});
+[100,1e3,1e4,1e5].forEach(function(v){AC.push(['Вбити '+v+' монстрів','kt',v]);});
+[1e3,1e6,1e9,1e12,1e15,1e18].forEach(function(v){AC.push(['Заробити '+v.toExponential(0).replace('+','')+' золота','gt',v]);});
+[50,250,1000,5000].forEach(function(v){AC.push(['Сума рівнів героїв '+v,'lv',v]);});
+[1,5,10].forEach(function(v){AC.push(['Вознестися '+v+' р.','asc',v]);});
 
 function fresh() {
-  return { gold: 0, zone: 1, max: 1, best: 1, kills: 0, hp: 0, boss: false, timer: 30,
-           auto: true, buy: 1, lv: HEROES.map(function () { return 0; }),
-           souls: 0, asc: 0, last: Date.now() };
+  return {gold:0,zone:1,max:1,best:1,kills:0,hp:0,boss:false,timer:30,auto:true,buy:1,
+    lv:H.map(function(){return 0;}),an:AN.map(function(){return 0;}),sk:SK.map(function(){return {a:0,c:0};}),
+    souls:0,asc:0,clicks:0,kt:0,gt:0,ach:{},last:Date.now()};
 }
 var S = fresh(), DPS = 0, CLICK = 1;
-
-function $(id) { return document.getElementById(id); }
-function fmt(n) {
-  if (!isFinite(n)) return '∞';
-  if (n < 1000) return (n < 10 && n % 1) ? n.toFixed(1) : String(Math.floor(n));
-  var e = Math.floor(Math.log10(n) / 3);
-  if (e < SUF.length) {
-    var v = n / Math.pow(10, e * 3);
-    return (v >= 100 ? v.toFixed(0) : v >= 10 ? v.toFixed(1) : v.toFixed(2)) + SUF[e];
-  }
-  return n.toExponential(2).replace('+', '');
+function $(id){return document.getElementById(id);}
+function fmt(n){
+  if(!isFinite(n))return '∞';
+  if(n<1000)return (n<10&&n%1)?n.toFixed(1):String(Math.floor(n));
+  var e=Math.floor(Math.log10(n)/3);
+  if(e<SUF.length){var v=n/Math.pow(10,e*3);return (v>=100?v.toFixed(0):v>=10?v.toFixed(1):v.toFixed(2))+SUF[e];}
+  return n.toExponential(2).replace('+','');
 }
-function setT(el, t) { if (el._t !== t) { el._t = t; el.textContent = t; } }
+function setT(el,t){if(el._t!==t){el._t=t;el.textContent=t;}}
 
 /* ---------- формули ---------- */
-function mhp(z) {
-  var b = 10 * (z - 1 + Math.pow(1.55, z - 1));
-  return z % 5 === 0 ? b * 10 : b;
+function mhp(z){var b=10*(z-1+Math.pow(1.55,z-1));return z%5===0?b*10:b;}
+function mult(l){var m=1,i;for(i=0;i<MS.length;i++)if(l>=MS[i])m*=4;if(l>200)m*=Math.pow(2,Math.floor((l-200)/25));return m;}
+function achN(){var n=0,k;for(k in S.ach)n++;return n;}
+function gm(){return (1+0.2*S.souls)*(1+0.02*achN());}
+function sumLv(){var s=0;for(var i=0;i<S.lv.length;i++)s+=S.lv[i];return s;}
+function psurge(){return S.sk[1].a>0?2:1;}
+function clickOf(l){return (1+l)*mult(l)*gm()*(1+0.2*S.an[1]);}
+function dpsOf(i,l){return H[i][2]*l*mult(l)*gm()*(1+0.25*S.an[0]);}
+function goldMult(){return (1+0.05*S.an[2])*(S.sk[2].a>0?3:1);}
+function costMult(){return Math.pow(0.97,S.an[3]);}
+function recalc(){DPS=0;for(var i=1;i<H.length;i++)DPS+=dpsOf(i,S.lv[i]);CLICK=clickOf(S.lv[0]);}
+function buyInfo(i){
+  var l=S.lv[i],c0=Math.floor(H[i][1]*Math.pow(1.07,l)*costMult()),n=S.buy;
+  if(!isFinite(c0))return {n:1,cost:Infinity};
+  if(n==='max'){n=Math.floor(Math.log(S.gold*0.07/Math.max(1,c0)+1)/Math.log(1.07));if(!(n>=1))n=1;if(n>9999)n=9999;}
+  return {n:n,cost:Math.floor(c0*(Math.pow(1.07,n)-1)/0.07)};
 }
-function mult(l) {
-  var m = 1, i;
-  for (i = 0; i < MILESTONES.length; i++) if (l >= MILESTONES[i]) m *= 4;
-  if (l > 200) m *= Math.pow(2, Math.floor((l - 200) / 25));
-  return m;
-}
-function gm() { return 1 + 0.2 * S.souls; }
-function clickOf(l) { return (1 + l) * mult(l) * gm(); }
-function dpsOf(i, l) { return HEROES[i][2] * l * mult(l) * gm(); }
-function recalc() {
-  DPS = 0;
-  for (var i = 1; i < HEROES.length; i++) DPS += dpsOf(i, S.lv[i]);
-  CLICK = clickOf(S.lv[0]);
-}
-function buyInfo(i) {
-  var h = HEROES[i], l = S.lv[i], c0 = h[1] * Math.pow(1.07, l), n = S.buy;
-  if (!isFinite(c0)) return { n: 1, cost: Infinity };
-  if (n === 'max') {
-    n = Math.floor(Math.log(S.gold * 0.07 / c0 + 1) / Math.log(1.07));
-    if (!(n >= 1)) n = 1;
-    if (n > 9999) n = 9999;
-  }
-  return { n: n, cost: c0 * (Math.pow(1.07, n) - 1) / 0.07 };
-}
+function ancCost(i){return S.an[i]+1;}
+function gain(){return Math.max(0,Math.floor((S.max-55)/5));}
 
 /* ---------- бій ---------- */
-function spawn() { S.boss = S.zone % 5 === 0; S.hp = mhp(S.zone); S.timer = 30; }
-function kill() {
-  S.gold += Math.ceil(mhp(S.zone) / 40);
-  if (S.boss) S.kills = 10; else S.kills++;
-  if (S.boss || S.kills >= 10) {
-    if (S.auto) {
-      S.zone++;
-      if (S.zone > S.max) S.max = S.zone;
-      if (S.zone > S.best) S.best = S.zone;
-    }
-    S.kills = 0;
+function spawn(){S.boss=S.zone%5===0;S.hp=mhp(S.zone);S.timer=30;}
+function kill(){
+  S.gold+=Math.ceil(mhp(S.zone)/15)*goldMult();S.gt+=Math.ceil(mhp(S.zone)/15);S.kt++;
+  if(S.boss)S.kills=10;else S.kills++;
+  if(S.boss||S.kills>=10){
+    if(S.auto){S.zone++;if(S.zone>S.max)S.max=S.zone;if(S.zone>S.best)S.best=S.zone;}
+    S.kills=0;
   }
   spawn();
 }
-function dmg(d) {
-  var n = 0;
-  while (d > 0 && n < 400) {
-    if (d >= S.hp) { d -= S.hp; kill(); n++; }
-    else { S.hp -= d; d = 0; }
+function dmg(d){var n=0;while(d>0&&n<400){if(d>=S.hp){d-=S.hp;kill();n++;}else{S.hp-=d;d=0;}}}
+var msgT=0;
+function msg(t,n){setT($('msg'),t);msgT=n||0;}
+function bossFail(){S.zone=Math.max(1,S.zone-1);S.auto=false;S.kills=0;spawn();msg('Бос вистояв. Зона '+S.zone+', автопросування вимкнено.',10);}
+function step(sec,off){
+  if(off&&S.boss&&S.hp>DPS*30)return false;
+  if(DPS>0)dmg(DPS*sec*(off?1:psurge()));
+  if(!off){
+    if(S.sk[0].a>0)dmg(CLICK*10*sec);
+    for(var i=0;i<SK.length;i++){var k=S.sk[i];if(k.a>0)k.a-=sec;if(k.c>0)k.c-=sec;}
+    if(S.boss){S.timer-=sec;if(S.timer<=0)bossFail();}
   }
-}
-var msgTicks = 0;
-function msg(t, ticks) { setT($('msg'), t); msgTicks = ticks || 0; }
-function bossFail() {
-  S.zone = Math.max(1, S.zone - 1);
-  S.auto = false; S.kills = 0; spawn();
-  msg('Бос вистояв. Повернулись на зону ' + S.zone + ', автопросування вимкнено.', 10);
-}
-function step(sec, off) {
-  if (off && S.boss && S.hp > DPS * 30) return false; // офлайн босів не проходимо
-  if (DPS > 0) dmg(DPS * sec);
-  if (!off && S.boss) { S.timer -= sec; if (S.timer <= 0) bossFail(); }
   return true;
 }
-function catchUp() {
-  var now = Date.now(), dt = Math.min((now - S.last) / 1000, 8 * 3600);
-  S.last = now;
-  if (dt < 5 || DPS <= 0) return;
-  var g0 = S.gold, steps = Math.min(Math.ceil(dt), 1800), sec = dt / steps;
-  for (var i = 0; i < steps; i++) if (!step(sec, true)) break;
-  if (S.gold > g0) msg('Поки вас не було: +' + fmt(S.gold - g0) + ' золота', 12);
+function catchUp(){
+  var now=Date.now(),dt=Math.min((now-S.last)/1000,8*3600);S.last=now;
+  if(dt<5||DPS<=0)return;
+  var g0=S.gold,n=Math.min(Math.ceil(dt),1800),s=dt/n;
+  for(var i=0;i<n;i++)if(!step(s,true))break;
+  if(S.gold>g0)msg('Поки вас не було: +'+fmt(S.gold-g0)+' золота',12);
+}
+function checkAch(){
+  S.lv_=sumLv();
+  AC.forEach(function(a,i){
+    var v=a[1]==='lv'?S.lv_:S[a[1]];
+    if(!S.ach[i]&&v>=a[2]){S.ach[i]=1;recalc();msg('Досягнення: '+a[0],6);}
+  });
 }
 
 /* ---------- інтерфейс ---------- */
-var el = {
-  gold: $('gold'), dps: $('dps'), souls: $('souls'), zone: $('zone'), prog: $('prog'),
-  hpbar: $('hpbar'), hptxt: $('hptxt'), tap: $('tap'), auto: $('auto'),
-  prev: $('prev'), next: $('next')
-};
-var list = $('heroes'), rows = [], tab = 'heroes';
-HEROES.forEach(function (h, i) {
-  var d = document.createElement('div');
-  d.className = 'hero';
-  d.innerHTML = '<div class="in"><b>' + h[0] + '</b><span class="lv"></span><span class="sd"></span></div>' +
-                '<button class="by" data-i="' + i + '"></button>';
-  list.appendChild(d);
-  rows.push({ lv: d.querySelector('.lv'), sd: d.querySelector('.sd'), by: d.querySelector('.by') });
-});
-var buyBtns = document.querySelectorAll('#buys button');
-var tabBtns = document.querySelectorAll('#tabs button');
+var el={gold:$('gold'),dps:$('dps'),souls:$('souls'),zone:$('zone'),prog:$('prog'),hpbar:$('hpbar'),hptxt:$('hptxt'),tap:$('tap'),auto:$('auto'),prev:$('prev'),next:$('next')};
+var tab='heroes';
+function build(pane,items,cls){
+  var rows=[];
+  items.forEach(function(t,i){
+    var d=document.createElement('div');d.className='it';
+    d.innerHTML='<div class="in"><b>'+t[0]+'</b><small class="a"></small><small class="b"></small></div><button class="by" data-p="'+pane+'" data-i="'+i+'"></button>';
+    $(pane).appendChild(d);
+    rows.push({d:d,a:d.querySelector('.a'),b:d.querySelector('.b'),by:d.querySelector('.by')});
+  });
+  return rows;
+}
+var hr=build('heroes',H),ar=build('anc',AN),sr=build('skills',SK);
+var achEl=[];
+AC.forEach(function(a){var d=document.createElement('div');d.className='it';d.innerHTML='<div class="in"><b></b></div>';d.querySelector('b').textContent=a[0];$('ach').appendChild(d);achEl.push(d);});
+var buyBtns=document.querySelectorAll('#buys button'),tabBtns=document.querySelectorAll('#tabs button');
 
-function gain() { return Math.max(0, Math.floor((S.max - 45) / 5)); }
-
-function render() {
-  setT(el.gold, fmt(S.gold));
-  setT(el.dps, fmt(DPS));
-  setT(el.souls, String(S.souls));
-  setT(el.zone, 'Зона ' + S.zone);
-  setT(el.prog, S.boss ? 'Бос · ' + Math.max(0, Math.ceil(S.timer)) + ' с' : 'Монстри ' + S.kills + '/10');
-  var mx = mhp(S.zone);
-  var pct = Math.max(0, Math.min(100, S.hp / mx * 100)).toFixed(1) + '%';
-  if (el.hpbar._w !== pct) { el.hpbar._w = pct; el.hpbar.style.width = pct; }
-  setT(el.hptxt, fmt(Math.ceil(S.hp)) + ' / ' + fmt(mx));
-  setT(el.tap, (S.boss ? 'Бос' : 'Монстр') + '\nБити · ' + fmt(CLICK));
-  setT(el.auto, 'Автопросування: ' + (S.auto ? 'увімк.' : 'вимк.'));
-  el.prev.disabled = S.zone <= 1;
-  el.next.disabled = S.zone >= S.max;
-  for (var k = 0; k < buyBtns.length; k++) {
-    buyBtns[k].classList.toggle('on', String(S.buy) === buyBtns[k].getAttribute('data-b'));
-  }
-  if (tab === 'heroes') {
-    for (var i = 0; i < rows.length; i++) {
-      var r = rows[i], l = S.lv[i], b = buyInfo(i);
-      setT(r.lv, 'Рівень ' + l);
-      setT(r.sd, i === 0 ? 'Шкода кліку ' + fmt(clickOf(l)) : 'Шкода за секунду ' + fmt(dpsOf(i, l)));
-      setT(r.by, (l ? 'Підняти +' : 'Найняти +') + b.n + '\n' + fmt(b.cost));
-      var ok = S.gold >= b.cost;
-      if (r.by._ok !== ok) { r.by._ok = ok; r.by.classList.toggle('ok', ok); }
+function okCls(b,ok){if(b._ok!==ok){b._ok=ok;b.classList.toggle('ok',ok);}}
+function render(){
+  setT(el.gold,fmt(S.gold));setT(el.dps,fmt(DPS*psurge()));setT(el.souls,String(S.souls));
+  setT(el.zone,'Зона '+S.zone);
+  setT(el.prog,S.boss?'Бос · '+Math.max(0,Math.ceil(S.timer))+' с':'Монстри '+S.kills+'/10');
+  var mx=mhp(S.zone),pct=Math.max(0,Math.min(100,S.hp/mx*100)).toFixed(1)+'%';
+  if(el.hpbar._w!==pct){el.hpbar._w=pct;el.hpbar.style.width=pct;}
+  setT(el.hptxt,fmt(Math.ceil(S.hp))+' / '+fmt(mx));
+  setT(el.tap,(S.boss?'Бос':'Монстр')+'\nБити · '+fmt(CLICK));
+  setT(el.auto,'Автопросування: '+(S.auto?'увімк.':'вимк.'));
+  el.prev.disabled=S.zone<=1;el.next.disabled=S.zone>=S.max;
+  for(var k=0;k<buyBtns.length;k++)buyBtns[k].classList.toggle('on',String(S.buy)===buyBtns[k].getAttribute('data-b'));
+  var i,r;
+  if(tab==='heroes'){
+    for(i=0;i<hr.length;i++){
+      r=hr[i];var l=S.lv[i],b=buyInfo(i);
+      setT(r.a,'Рівень '+l+' · множник ×'+fmt(mult(l)));
+      setT(r.b,i===0?'Шкода кліку '+fmt(clickOf(l)):'Шкода за секунду '+fmt(dpsOf(i,l)));
+      setT(r.by,(l?'Підняти +':'Найняти +')+b.n+'\n'+fmt(b.cost));
+      okCls(r.by,S.gold>=b.cost);
     }
-  } else if (tab === 'ascend') {
-    var g = gain();
-    setT($('a-max'), String(S.max));
-    setT($('a-souls'), String(S.souls));
-    setT($('a-mult'), '×' + gm().toFixed(1));
-    setT($('a-gain'), '+' + g);
-    $('a-btn').disabled = g < 1;
-  } else {
-    setT($('m-best'), String(S.best));
-    setT($('m-asc'), String(S.asc));
+  }else if(tab==='anc'){
+    for(i=0;i<ar.length;i++){
+      r=ar[i];setT(r.a,'Рівень '+S.an[i]);setT(r.b,AN[i][1]);
+      setT(r.by,'Підняти\n'+ancCost(i)+' душ');okCls(r.by,S.souls>=ancCost(i));
+    }
+  }else if(tab==='skills'){
+    for(i=0;i<sr.length;i++){
+      r=sr[i];var s=S.sk[i],open=S.lv[SK[i][4]]>=SK[i][5];
+      setT(r.a,SK[i][1]);
+      setT(r.b,open?(s.a>0?'Діє: '+Math.ceil(s.a)+' с':s.c>0?'Перезарядка: '+Math.ceil(s.c)+' с':'Готово'):'Відкриється: '+H[SK[i][4]][0]+' рівень '+SK[i][5]);
+      setT(r.by,'Використати');r.by.disabled=!open||s.c>0;
+    }
+  }else if(tab==='ach'){
+    for(i=0;i<AC.length;i++){var d=S.ach[i]?1:0;if(achEl[i]._d!==d){achEl[i]._d=d;achEl[i].classList.toggle('done',!!d);}}
+  }else{
+    var g=gain();
+    setT($('a-max'),String(S.max));setT($('a-gain'),'+'+g);$('a-btn').disabled=g<1;
+    setT($('m-best'),String(S.best));setT($('m-asc'),String(S.asc));
   }
 }
-var raf = 0;
-function dirty() { if (!raf) raf = requestAnimationFrame(function () { raf = 0; render(); }); }
+var raf=0;
+function dirty(){if(!raf)raf=requestAnimationFrame(function(){raf=0;render();});}
 
 /* ---------- збереження ---------- */
-function save() { try { S.last = Date.now(); localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
-function load() {
-  try {
-    var j = JSON.parse(localStorage.getItem(KEY));
-    if (j && Array.isArray(j.lv)) {
-      S = Object.assign(fresh(), j);
-      while (S.lv.length < HEROES.length) S.lv.push(0);
-    }
-  } catch (e) {}
-  if (!(S.hp > 0) || !isFinite(S.hp)) spawn();
-  if (S.buy !== 'max') S.buy = [1, 10, 100].indexOf(S.buy) >= 0 ? S.buy : 1;
+function save(){try{S.last=Date.now();localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function load(){
+  try{
+    var j=JSON.parse(localStorage.getItem(KEY));
+    if(j&&Array.isArray(j.lv)){S=Object.assign(fresh(),j);while(S.lv.length<H.length)S.lv.push(0);}
+  }catch(e){}
+  if(!(S.hp>0)||!isFinite(S.hp))spawn();
+  if(S.buy!=='max')S.buy=[1,10,100].indexOf(S.buy)>=0?S.buy:1;
 }
 
 /* ---------- події ---------- */
-$('tap').addEventListener('pointerdown', function (e) {
-  e.preventDefault();
-  dmg(CLICK); dirty();
+$('tap').addEventListener('pointerdown',function(e){e.preventDefault();S.clicks++;dmg(CLICK);dirty();});
+$('tap').addEventListener('contextmenu',function(e){e.preventDefault();});
+document.addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('.by');if(!b)return;
+  var p=b.getAttribute('data-p'),i=+b.getAttribute('data-i');
+  if(p==='heroes'){var f=buyInfo(i);if(S.gold<f.cost)return;S.gold-=f.cost;S.lv[i]+=f.n;}
+  else if(p==='anc'){var c=ancCost(i);if(S.souls<c)return;S.souls-=c;S.an[i]++;}
+  else if(p==='skills'){var s=S.sk[i];if(s.c>0||S.lv[SK[i][4]]<SK[i][5])return;s.a=SK[i][2];s.c=SK[i][3];}
+  recalc();checkAch();dirty();
 });
-$('tap').addEventListener('contextmenu', function (e) { e.preventDefault(); });
-list.addEventListener('click', function (e) {
-  var b = e.target.closest('.by');
-  if (!b) return;
-  var i = +b.getAttribute('data-i'), info = buyInfo(i);
-  if (S.gold < info.cost) return;
-  S.gold -= info.cost; S.lv[i] += info.n;
-  recalc(); dirty();
-});
-$('buys').addEventListener('click', function (e) {
-  var b = e.target.closest('button');
-  if (!b) return;
-  var v = b.getAttribute('data-b');
-  S.buy = v === 'max' ? 'max' : +v;
-  dirty();
-});
-$('auto').addEventListener('click', function () { S.auto = !S.auto; dirty(); });
-$('prev').addEventListener('click', function () { if (S.zone > 1) { S.zone--; S.kills = 0; spawn(); dirty(); } });
-$('next').addEventListener('click', function () { if (S.zone < S.max) { S.zone++; S.kills = 0; spawn(); dirty(); } });
-Array.prototype.forEach.call(tabBtns, function (b) {
-  b.addEventListener('click', function () {
-    tab = b.getAttribute('data-t');
-    ['heroes', 'ascend', 'more'].forEach(function (id) { $(id).hidden = id !== tab; });
-    Array.prototype.forEach.call(tabBtns, function (x) { x.classList.toggle('on', x === b); });
+$('buys').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var v=b.getAttribute('data-b');S.buy=v==='max'?'max':+v;dirty();});
+$('auto').addEventListener('click',function(){S.auto=!S.auto;dirty();});
+$('prev').addEventListener('click',function(){if(S.zone>1){S.zone--;S.kills=0;spawn();dirty();}});
+$('next').addEventListener('click',function(){if(S.zone<S.max){S.zone++;S.kills=0;spawn();dirty();}});
+var panes=['heroes','anc','skills','ach','more'];
+Array.prototype.forEach.call(tabBtns,function(b){
+  b.addEventListener('click',function(){
+    tab=b.getAttribute('data-t');
+    panes.forEach(function(id){$(id).hidden=id!==tab;});
+    Array.prototype.forEach.call(tabBtns,function(x){x.classList.toggle('on',x===b);});
     dirty();
   });
 });
-
-function twoStep(btn, label, action) {
-  var t = 0;
-  btn.addEventListener('click', function () {
-    if (t) { clearTimeout(t); t = 0; btn.textContent = label; action(); }
-    else {
-      btn.textContent = 'Підтвердити?';
-      t = setTimeout(function () { t = 0; btn.textContent = label; }, 4000);
-    }
+function twoStep(btn,label,action){
+  var t=0;
+  btn.addEventListener('click',function(){
+    if(t){clearTimeout(t);t=0;btn.textContent=label;action();}
+    else{btn.textContent='Підтвердити?';t=setTimeout(function(){t=0;btn.textContent=label;},4000);}
   });
 }
-twoStep($('a-btn'), 'Вознестися', function () {
-  var g = gain();
-  if (g < 1) return;
-  S.souls += g; S.asc++;
-  S.gold = 0; S.zone = 1; S.max = 1; S.kills = 0; S.auto = true;
-  S.lv = HEROES.map(function () { return 0; });
-  recalc(); spawn(); save();
-  msg('Вознесіння! +' + g + ' душ', 10);
-  dirty();
+twoStep($('a-btn'),'Вознестися',function(){
+  var g=gain();if(g<1)return;
+  S.souls+=g;S.asc++;S.gold=0;S.zone=1;S.max=1;S.kills=0;S.auto=true;
+  S.lv=H.map(function(){return 0;});S.sk=SK.map(function(){return {a:0,c:0};});
+  recalc();spawn();checkAch();save();msg('Вознесіння! +'+g+' душ',10);dirty();
 });
-twoStep($('reset'), 'Скинути весь прогрес', function () {
-  try { localStorage.removeItem(KEY); } catch (e) {}
-  S = fresh(); recalc(); spawn(); msg('', 0); dirty();
+twoStep($('reset'),'Скинути весь прогрес',function(){
+  try{localStorage.removeItem(KEY);}catch(e){}
+  S=fresh();recalc();spawn();msg('',0);dirty();
 });
 
-/* ---------- цикл: 1 раз на секунду, зупиняється у фоні ---------- */
-var timerId = 0, ticks = 0;
-function tick() {
-  S.last = Date.now();
-  step(1, false);
-  if (msgTicks > 0 && --msgTicks === 0) msg('', 0);
-  if (++ticks % 15 === 0) save();
+/* ---------- цикл: раз на секунду, зупиняється у фоні ---------- */
+var tid=0,ticks=0;
+function tick(){
+  S.last=Date.now();step(1,false);
+  if(msgT>0&&--msgT===0)msg('',0);
+  if(++ticks%5===0)checkAch();
+  if(ticks%15===0)save();
   dirty();
 }
-function start() {
-  if (timerId) return;
-  catchUp();
-  timerId = setInterval(tick, 1000);
-  dirty();
-}
-function stop() { clearInterval(timerId); timerId = 0; save(); }
-document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else start(); });
-window.addEventListener('pagehide', save);
+function start(){if(tid)return;catchUp();tid=setInterval(tick,1000);dirty();}
+function stop(){clearInterval(tid);tid=0;save();}
+document.addEventListener('visibilitychange',function(){if(document.hidden)stop();else start();});
+window.addEventListener('pagehide',save);
 
-load();
-recalc();
-if (!document.hidden) start();
+load();recalc();checkAch();
+if(!document.hidden)start();
 render();
 })();
 </script>
